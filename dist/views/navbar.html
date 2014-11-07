@@ -1,0 +1,1 @@
+<div class="header" ng-controller="NavbarCtrl"> <ul class="nav nav-pills pull-right"> <li><a href="#/">Home</a></li> <li ng-show="currentUser.auth"><a href="#/user">User</a></li> <li ng-hide="currentUser.auth"><a href="#/login">Login</a></li> <li ng-show="currentUser.auth"><a href="" ng-click="logout()">Logout</a></li> </ul> <h3 class="text-muted">Buildercore</h3> </div>
