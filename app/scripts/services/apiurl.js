@@ -8,4 +8,4 @@
  * Constant in the bcApp.
  */
 angular.module('bcApp')
-  .constant('apiurl', 42);
+  .constant('apiurl', 'http://104.236.35.119/api/');

@@ -8,21 +8,18 @@
  *
  * Main module of the application.
  */
-angular
-  .module('bcApp', [
+
+angular.module('bcApp', [
     'ngCookies',
+    'ngSanitize',
     'ngResource',
     'ngRoute'
-  ])
-  .config(function ($routeProvider) {
+])
+  .config(function ($routeProvider, $locationProvider, $httpProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
-      })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl'
       })
       .when('/login', {
         templateUrl: 'views/login.html',
@@ -35,4 +32,13 @@ angular
       .otherwise({
         redirectTo: '/'
       });
+
+    //$locationProvider.html5Mode(true);
+
+  })
+  .run(function ($rootScope, $location) {
+
+    $rootScope.currentUser = { auth: false };
+    $location.path('/');
+
   });
