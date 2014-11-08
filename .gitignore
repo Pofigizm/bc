@@ -1,4 +1,5 @@
 node_modules
+git status
 .tmp
 .sass-cache
 bower_components

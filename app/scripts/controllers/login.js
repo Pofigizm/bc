@@ -8,26 +8,23 @@
  * Controller of the bcApp
  */
 angular.module('bcApp')
-  .controller('LoginCtrl', function ($scope, $http, apiurl, $location, $rootScope) {
+  .controller('LoginCtrl', function ($scope, $http, apiurl, $location, $rootScope, localStorageService) {
 
-    $scope.user = { email: 'test@odesk2.com', password: 'password' };  // test
-    $scope.errors = {};
+    $scope.user = {}; 
+    $scope.error = false;
 
-    $scope.login = function(form) {
+    $scope.hideErr = function( ){
+      $scope.error = false;
+    };
+
+    $scope.doLogin = function( ){
       $scope.submitted = true;
 
       var postdata = JSON.stringify({
-        username : $scope.user.email,
+        username : $scope.user.name,
         password : $scope.user.password
       });
-
-/*
-          'Accept':'application/json',
-          'Access-Control-Allow-Origin': '*'
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type, X-Requested-With'
-*/
-
+      
       $http({
         method: 'POST',
         withCredentials: true,
@@ -38,20 +35,26 @@ angular.module('bcApp')
         data: postdata
       })
       .success( function( getdata ) {
-
         $rootScope.currentUser = {
           auth: true,
           id: getdata.id,
-          email: getdata.username
+          name: getdata.username
         }
-        $location.path('/');
-      
+        if( localStorageService.isSupported ){
+          localStorageService.set( 'auth', true );
+          localStorageService.set( 'id', getdata.id );
+          localStorageService.set( 'name', getdata.username );
+        }
+        $location.path('/user');
       })
       .error( function( getdata) {
-
-        $rootScope.currentUser = { auth: false };
-        //TODO - message login error
-
+        $rootScope.currentUser = null;
+        if( localStorageService.isSupported ){
+          localStorageService.remove( 'auth' );
+          localStorageService.remove( 'id' );
+          localStorageService.remove( 'name' );
+        }
+        $scope.error = true;
       });
     };
 
