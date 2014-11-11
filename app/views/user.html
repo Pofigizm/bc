@@ -18,15 +18,7 @@
     <div class="input-group">
       <span class="input-group-addon">Telephone</span>
       <span ng-hide="edit" type="text" class="form-control">{{phoneToText(userdata.tel)}}</span>
-      <span ng-show="edit" class="input-group-addon">+</span>
-      <input ng-show="edit" type="text" class="form-control" ng-model="newdata.tel.countryCode">
-      <span ng-show="edit" class="input-group-addon">(</span>
-      <input ng-show="edit" type="text" class="form-control" ng-model="newdata.tel.areaCode">
-      <span ng-show="edit" class="input-group-addon">)</span>
-      <input ng-show="edit" type="text" class="form-control" ng-model="newdata.tel.number">
-      <span ng-show="edit" class="input-group-addon">ext</span>
-      <input ng-show="edit" type="text" class="form-control" ng-model="newdata.tel.extension">
-
+      <input ng-show="edit" type="text" class="form-control" ng-model="teltext" ng-change="checkphone()">
     </div>
 
     <div class="input-group" ng-hide="edit">

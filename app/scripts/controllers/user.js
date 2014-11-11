@@ -8,7 +8,7 @@
  * Controller of the bcApp
  */
 angular.module('bcApp')
-  .controller('UserCtrl', function ($scope, $http, apiurl, $rootScope, $location) {
+  .controller('UserCtrl', function ($scope, $http, apiurl, $rootScope, $location, $timeout) {
 
     if( !$rootScope.currentUser ) $location.path('/');
     
@@ -30,6 +30,7 @@ angular.module('bcApp')
           },
           password: null
         };
+        $scope.teltext = $scope.phoneToText( getdata.tel );
       });
     };
 
@@ -38,7 +39,7 @@ angular.module('bcApp')
     };
 
     $scope.doSave = function( ){
-      if( $scope.newdata.password == null ){
+      if( $scope.newdata.password === null ){
         $scope.error = true;
       } else {
         $scope.edit = false;
@@ -61,19 +62,54 @@ angular.module('bcApp')
       $scope.doLoad();
     };
 
-    $scope.phoneToText = function( tel ) {
-      tel = tel || {};
-      // TODO - Have to understand why if remove check for tel-object throw errors
-      // Error: [$interpolate:interr] Can't interpolate: {{phoneToText(userdata.tel);}}
-      // TypeError: Cannot read property 'countryCode' of undefined
+    $scope.phoneToText = function( telobj ) {
+
+      telobj = telobj || {
+        countryCode: '',
+        areaCode: '',
+        number: '',
+        extension: ''
+      };
+
       var text = '';
-      text += ' + ' + tel.countryCode;
-      text += ' ( ' + tel.areaCode;
-      text += ' ) ' + tel.number;
-      if( tel.extension ) 
-        text += ' ext: ' + tel.extension;
+      text += '+ ' + telobj.countryCode;
+      if( telobj.areaCode ) 
+        text += ' ( ' + telobj.areaCode;
+      if( telobj.number )
+        text += ' ) ' + telobj.number.toString().split('').slice( 0, 3 ).join('');
+      if( telobj.number.toString().length > 3 )
+        text += '-' + telobj.number.toString().split('').slice( 3 ).join('');
+      if( telobj.extension ) 
+        text += ' ext: ' + telobj.extension;
+
       return text;
     };
+
+    $scope.textToPhone = function( teltext ) {
+
+      var telobj = {};
+      telobj.countryCode = '';
+      telobj.areaCode = '';
+      telobj.number = '';
+      telobj.extension = '';
+
+      var a = ('' + teltext).replace(/[^0-9]/g,'').split('');
+      telobj.countryCode  = '1';
+      telobj.areaCode     = a.slice(  1,  4 ).join('');
+      telobj.number       = a.slice(  4, 11 ).join('');
+      telobj.extension    = a.slice( 11, 15 ).join('');
+
+      return telobj;      
+    };
+
+    $scope.checkphone = function( ){
+
+      $scope.newdata.tel = $scope.textToPhone( $scope.teltext );
+
+      $timeout( function( ){
+        $scope.teltext = $scope.phoneToText( $scope.newdata.tel );
+      }, 0);
+    };    
 
     // start data and calls
 

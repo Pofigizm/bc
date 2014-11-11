@@ -8,9 +8,9 @@
  * Controller of the bcApp
  */
 angular.module('bcApp')
-  .controller('LoginCtrl', function ($scope, $http, apiurl, $location, $rootScope, localStorageService) {
+  .controller('LoginCtrl', function ( $scope, $http, apiurl, $location, $rootScope ) {
 
-    $scope.user = {}; 
+    $scope.user = { name: 'test@odesk2.com', password: 'password'}; 
     $scope.error = false;
 
     $scope.hideErr = function( ){
@@ -34,26 +34,16 @@ angular.module('bcApp')
         },
         data: postdata
       })
-      .success( function( getdata ) {
+      .success( function( getdata ){
         $rootScope.currentUser = {
           auth: true,
           id: getdata.id,
           name: getdata.username
-        }
-        if( localStorageService.isSupported ){
-          localStorageService.set( 'auth', true );
-          localStorageService.set( 'id', getdata.id );
-          localStorageService.set( 'name', getdata.username );
-        }
+        };
         $location.path('/user');
       })
-      .error( function( getdata) {
+      .error( function( ){
         $rootScope.currentUser = null;
-        if( localStorageService.isSupported ){
-          localStorageService.remove( 'auth' );
-          localStorageService.remove( 'id' );
-          localStorageService.remove( 'name' );
-        }
         $scope.error = true;
       });
     };
