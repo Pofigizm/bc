@@ -3,4 +3,4 @@ bc
 
 http://pofigizm.github.io/bc
 
-Senior Javascript Front end Developer
+http://pofigizm.github.io/bc/winview.html
