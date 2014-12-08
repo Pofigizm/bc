@@ -28,8 +28,12 @@ angular.module('bcApp', [
         templateUrl: 'views/user.html',
         controller: 'UserCtrl'
       })
+      .when('/buyers', {
+        templateUrl: 'views/buyers.html',
+        controller: 'BuyersCtrl'
+      })
       .otherwise({
-        redirectTo: '/'
+        redirectTo: '/buyers'
       });
 
     //$locationProvider.html5Mode(true);
@@ -52,10 +56,10 @@ angular.module('bcApp', [
             id: getdata.id,
             name: getdata.username
           };
-          $location.path('/');
+          $location.path('/buyers');
         } else {
           $rootScope.currentUser = null;
-          $location.path('/'); 
+          $location.path('/buyers'); 
         }
       });
 
