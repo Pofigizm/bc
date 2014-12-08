@@ -41,7 +41,8 @@ angular.module('bcApp', [
   })
   .run(function ($rootScope, $location, $http, apiurl ) {
 
-      $http({
+    $location.path('/buyers');
+    /*  $http({
         method: 'GET',
         withCredentials: true,
         url: apiurl + 'user.json',
@@ -62,5 +63,5 @@ angular.module('bcApp', [
           $location.path('/buyers'); 
         }
       });
-
+*/
   });

@@ -27,7 +27,7 @@ angular.module('bcApp')
     $scope.show = {};
     $scope.nameList = [];
 
-    $http.get('scripts/controllers/data.json')
+    $http.get('data.json')
       .then(function(res){
         $scope.contactList = $filter('orderBy')(res.data, 'name');
         $scope.contactList
